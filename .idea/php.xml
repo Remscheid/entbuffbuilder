@@ -5,4 +5,5 @@
       <PhpCSFixerConfiguration tool_path="$PROJECT_DIR$/vendor/bin/php-cs-fixer" />
     </phpcsfixer_settings>
   </component>
+  <component name="PhpProjectSharedConfiguration" php_language_level="8.1" />
 </project>
