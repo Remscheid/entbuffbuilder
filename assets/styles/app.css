@@ -1,5 +1,31 @@
 @import "tailwind.css";
 
+html {
+    font-family: sans-serif;
+    font-size: 14px;
+}
+
 body {
-    background-color: goldenrod;
+    background: url("../images/Stars.png") #111111 repeat;
+}
+
+.appHeadlineX {
+    color: transparent;
+    background-color: transparent;
+    height: 1px;
+    overflow: hidden;
+    margin-bottom: 2.5rem;
+}
+
+@media only screen and (max-width: 1199px) {
+    .appHeadline {
+        margin-bottom: 1rem;
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    .appHeadline {
+        margin-bottom: 0;
+        position: absolute;
+    }
 }
