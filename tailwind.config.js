@@ -5,7 +5,18 @@ module.exports = {
     "./templates/**/*.html.twig",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        'swgDarkBlue': '#004B56',
+        'swgBlue': '#35BDCE',
+        'swgLightBlue': '#00E3F3',
+        'swgLighterBlue': '#9CF0FA',
+        'swgOrange': '#FBA22E',
+      },
+      boxShadow: {
+        'swg': '0 0 0 .2rem rgba(53,189,206,.25)',
+      }
+    },
   },
   plugins: [],
 }

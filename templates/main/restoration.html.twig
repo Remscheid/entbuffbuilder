@@ -2,10 +2,17 @@
 
 {% block title %}SWG Entertainer Buff Builder for SWG Restoration{% endblock %}
 
-{% block body %}
-    {{ include('partials/header.html.twig', {title: 'SWG Entertainer Buff Builder'}) }}
+{% block hiddenTitle %}SWG Entertainer Buff Builder{% endblock %}
 
-    <div class="container text-white">
-        Restoration
-    </div>
+{% block edition %}Restoration Edition{% endblock %}
+
+{% block credits %}I wrote this little tool because I always found it difficult to tell an entertainer which buffs I wanted from him without knowing what buffs were available. Unfortunately SWG doesn't make this info available to the player and information on the internet on this topic is very sparse. I eventually ended up leveling an entertainer myself, just to be able to play around with different buff configurations, which I don't think should be the way to go. So I tried to come up with an alternative solution, hoping to make it a little easier for newer players to get into the entertainer buffing aspect of the game.<br>
+    <br>
+    The data is based on the Combat Upgrade (CU) state of the game, as it is used in <a href="https://swgr.org/" target="_blank" class="text-swgBlue no-underline bg-transparent">SWG Restoration</a>, which I am not affiliated with. This is a private fan project.<br>
+    <br>
+    Star Wars Galaxies is a registered trademark of Lucasfilm Entertainment Company Ltd.<br>
+    <br>
+    Copyright © 2024 Sipherius. All rights reserved.<br>
+    <br>
+    Please report bugs and send feedback to entbuff[at]sipherius.net or contact me on Discord at Sipherius#5505.
 {% endblock %}
