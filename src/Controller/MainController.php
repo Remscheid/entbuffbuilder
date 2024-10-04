@@ -28,6 +28,7 @@ class MainController extends AbstractController
             'pointsMax' => 20,
             'allBuffs' => $allBuffs,
             'buffGroups' => $buffGroups,
+            'template' => '/tt Could you buff me with %Buffs%, please?',
         ]);
     }
 
@@ -47,6 +48,7 @@ class MainController extends AbstractController
             'pointsMax' => 20,
             'allBuffs' => $allBuffs,
             'buffGroups' => $buffGroups,
+            'template' => '/tt Could you buff me with %Buffs%, please?',
         ]);
     }
 
@@ -65,6 +67,7 @@ class MainController extends AbstractController
             'pointsMax' => 40,
             'allBuffs' => $allBuffs,
             'buffGroups' => $buffGroups,
+            'template' => '/tt Could you buff me with %Buffs%, please?',
         ]);
     }
 

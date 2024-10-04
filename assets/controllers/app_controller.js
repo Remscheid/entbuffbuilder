@@ -5,6 +5,9 @@ export default class extends Controller {
         'buffsJson',
         'pointsMax',
         'pointsAssigned',
+        'template',
+        'chatMessage',
+        'copySuccess',
     ];
 
     buffs = [];
@@ -37,6 +40,7 @@ export default class extends Controller {
         // Update UI
 
         this._updateUI(this.buffs, this.pointsAssigned, this.pointsMax);
+        this._updateChatMessage(this.buffs);
     }
 
     clearAll() {
@@ -46,6 +50,29 @@ export default class extends Controller {
         });
 
         this._updateUI(this.buffs, this.pointsAssigned, this.pointsMax);
+        this._updateChatMessage(this.buffs);
+    }
+
+    copyToClipboard() {
+        const clipText = this.chatMessageTarget.value;
+        if (clipText) {
+            navigator.clipboard.writeText(clipText).then(() => {
+                this.copySuccessTarget.innerHTML = `Copied to clipboard:<br>${clipText}`;
+                this.copySuccessTarget.classList.remove('hidden');
+                setTimeout(() => {
+                    this.copySuccessTarget.classList.add('hidden');
+                }, 5000);
+            });
+        }
+    }
+
+    applyTemplate() {
+        this._updateChatMessage(this.buffs);
+    }
+
+    resetTemplate() {
+        this.templateTarget.value = '/tt Could you buff me with %Buffs%, please?';
+        this._updateChatMessage(this.buffs);
     }
 
     _checkBuffAssignment(action, currentAssignments, maxAssignments) {
@@ -106,5 +133,39 @@ export default class extends Controller {
             const selectedBuffContainer = document.getElementById('assigned_' + buff.id + '_container');
             selectedBuffContainer.classList.toggle('hidden', !buff.assignments);
         });
+    }
+
+    _updateChatMessage(buffs) {
+        const buffTextParts = [];
+
+        buffs.forEach(buff => {
+            if (buff.assignments > 0) {
+                buffTextParts.push(`${buff.name} (${buff.assignments}/${buff.maxAssignments})`);
+            }
+        });
+
+        if (buffTextParts.length === 0) {
+            this.chatMessageTarget.value = '';
+            return;
+        }
+
+        let buffText   = '';
+        let buffTextLC = '';
+        buffTextParts.forEach((textPart, index) => {
+            if (index === 0) {
+                buffText += textPart;
+                buffTextLC += textPart.toLowerCase();
+            } else if (index === buffTextParts.length - 1) {
+                buffText += ` and ${textPart}`;
+                buffTextLC += ` and ${textPart.toLowerCase()}`;
+            } else {
+                buffText += `, ${textPart}`;
+                buffTextLC += `, ${textPart.toLowerCase()}`;
+            }
+        });
+
+        this.chatMessageTarget.value = this.templateTarget.value
+            .replace('%Buffs%', buffText)
+            .replace('%buffs%', buffTextLC);
     }
 }

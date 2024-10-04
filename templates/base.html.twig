@@ -113,7 +113,7 @@
                             {% endfor %}
                         {% endfor %}
                         <div class="mt-4 flex justify-end">
-                            {{ include('partials/button.html.twig', {id: 'clearAllButton', label: 'Clear all', action: 'app#clearAll'}) }}
+                            {{ include('partials/button.html.twig', {id: 'clearAllButton', label: 'Clear all', dataAction: 'app#clearAll'}) }}
                         </div>
                     </div>
                 </div>
@@ -122,18 +122,21 @@
                         <div class="font-bold">
                             <label for="chatMessage">Send the following request to your entertainer</label>
                         </div>
-                        <div class="mt-2 mb-4">
-                            {{ include('partials/input.html.twig', {id: 'chatMessage', placeholder: 'Please select some buffs from the list.', readonly: 'readonly'}) }}
-                            {{ include('partials/button.html.twig', {id: 'copyToClipboardButton', label: 'Copy to clipboard'}) }}
+                        <div class="mt-2 mb-4 relative">
+                            {{ include('partials/input.html.twig', {id: 'chatMessage', dataTarget: 'data-app-target="chatMessage"', placeholder: 'Please select some buffs from the list.', readonly: 'readonly'}) }}
+                            {{ include('partials/button.html.twig', {id: 'copyToClipboardButton', label: 'Copy to clipboard', dataAction: 'app#copyToClipboard'}) }}
                             {{ include('partials/button.html.twig', {id: 'saveToUrlButton', label: 'Save to URL'}) }}
+                            <div data-app-target="copySuccess"
+                                 class="hidden absolute top-full bg-swgOrange text-white rounded mt-2 py-1 px-2">
+                            </div>
                         </div>
                         <div class="font-bold">
                             <label for="chatTemplate">Modify the request template</label>
                         </div>
                         <div class="mt-2 mb-4">
-                            {{ include('partials/input.html.twig', {id: 'chatTemplate'}) }}
-                            {{ include('partials/button.html.twig', {id: 'applyTemplateButton', label: 'Apply template'}) }}
-                            {{ include('partials/button.html.twig', {id: 'resetTemplateButton', label: 'ResetTemplate'}) }}
+                            {{ include('partials/input.html.twig', {id: 'chatTemplate', value: template, dataTarget: 'data-app-target="template"'}) }}
+                            {{ include('partials/button.html.twig', {id: 'applyTemplateButton', label: 'Apply template', dataAction: 'app#applyTemplate'}) }}
+                            {{ include('partials/button.html.twig', {id: 'resetTemplateButton', label: 'ResetTemplate', dataAction: 'app#resetTemplate'}) }}
                         </div>
                     </div>
                 </div>

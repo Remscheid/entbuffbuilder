@@ -2,4 +2,6 @@
        id="{{ id }}"
        class="w-full h-10 py-1.5 px-3 bg-swgDarkBlue border border-solid border-swgBlue rounded-[7px] text-swgLighterBlue transition-shadow	focus:outline-none focus:shadow-swg"
        {% if placeholder is defined %}placeholder="{{ placeholder }}"{% endif %}
-       {% if readonly is defined %}{{ readonly }}{% endif %}>
+       {% if value is defined %}value="{{ value }}"{% endif %}
+       {% if readonly is defined %}{{ readonly }}{% endif %}
+       {% if dataTarget is defined %}{{ dataTarget|raw }}{% endif %}>
