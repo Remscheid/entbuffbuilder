@@ -25,6 +25,8 @@ class MainController extends AbstractController
         dump($buffGroups);
 
         return $this->render('main/legends.html.twig', [
+            'pointsMax' => 20,
+            'allBuffs' => $allBuffs,
             'buffGroups' => $buffGroups,
         ]);
     }
@@ -42,6 +44,8 @@ class MainController extends AbstractController
         dump($buffGroups);
 
         return $this->render('main/restoration.html.twig', [
+            'pointsMax' => 20,
+            'allBuffs' => $allBuffs,
             'buffGroups' => $buffGroups,
         ]);
     }
@@ -58,6 +62,8 @@ class MainController extends AbstractController
         dump($buffGroups);
 
         return $this->render('main/resurgence.html.twig', [
+            'pointsMax' => 40,
+            'allBuffs' => $allBuffs,
             'buffGroups' => $buffGroups,
         ]);
     }

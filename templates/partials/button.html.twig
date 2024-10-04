@@ -1,5 +1,6 @@
 <button type="button"
         id="{{ id }}"
-        class="mt-2 py-1 px-2 rounded text-swgBlue border-swgBlue hover:bg-swgBlue hover:border-swgBlue hover:text-gray-700 text-center align-middle select-none bg-transparent border border-solid transition-colors">
+        class="mt-2 py-1 px-2 rounded text-swgBlue border-swgBlue hover:bg-swgBlue hover:border-swgBlue hover:text-gray-700 text-center align-middle select-none bg-transparent border border-solid transition-colors"
+        {% if action is defined %}data-action="{{ action }}"{% endif %}>
     {{ label }}
 </button>

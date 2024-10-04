@@ -22,7 +22,24 @@
         </h1>
 
         <div class="w-full sm:max-w-[600px] md:max-w-[720px] lg:max-w-[990px] xl:max-w-[1220px] px-4 mx-auto">
-            <main class="flex flex-wrap text-swgLighterBlue bg-swgDarkBlue border-swgLightBlue border-solid border-[3px] rounded-[7px] mb-6" id="mainDialog">
+            <main class="flex flex-wrap text-swgLighterBlue bg-swgDarkBlue border-swgLightBlue border-solid border-[3px] rounded-[7px] mb-6" id="mainDialog" data-controller="app">
+                <textarea data-app-target="buffsJson" class="hidden">
+                    [
+                    {% for buff in allBuffs %}
+                        {
+                            "id": {{ buff.id }},
+                            "name": "{{ buff.name }}",
+                            "cost": {{ buff.cost }},
+                            "maxAssignments": {{ buff.maxAssignments }},
+                            "effect": {{ buff.effect }},
+                            "description": "{{ buff.description }}",
+                            "prefix": "{{ buff.prefix }}",
+                            "suffix": "{{ buff.suffix }}",
+                            "assignments": 0
+                        }{% if not loop.last %},{% endif %}
+                    {% endfor %}
+                    ]
+                </textarea>
                 <div class="w-full px-1.5 py-1 bg-swgLightBlue text-swgDarkBlue font-bold text-sm">
                     SWG Entertainer Buff Builder ●&nbsp;<i>{% block edition %}{% endblock %}</i>&nbsp;<small>by Sipherius</small>
                     <span class="float-right underline cursor-pointer">Show tour</span>
@@ -46,13 +63,22 @@
                                             </div>
                                             <div class="w-1/3 text-right select-none whitespace-nowrap">
                                                 <div class="flex items-center justify-end">
-                                                    <span class="mr-4">0/{{ buff.maxAssignments }}</span>
+                                                    <span class="mr-4"><span id="assignments_{{ buff.id }}">0</span>/{{ buff.maxAssignments }}</span>
                                                     <button type="button"
-                                                            class="w-5 h-5 p-0 mr-1 text-base leading-none rounded disabled:opacity-60 text-swgBlue border-swgBlue hover:bg-swgBlue hover:border-swgBlue hover:text-gray-700 text-center align-middle select-none bg-transparent border border-solid transition-colors">
+                                                            id="assignments_{{ buff.id }}_decrease"
+                                                            class="w-5 h-5 p-0 mr-1 text-base leading-none rounded disabled:opacity-60 text-swgBlue border-swgBlue hover:bg-swgBlue hover:border-swgBlue hover:text-gray-700 text-center align-middle select-none bg-transparent border border-solid transition-colors"
+                                                            data-app-buffid-param="{{ buff.id }}"
+                                                            data-app-action-param="decrease"
+                                                            data-action="app#selectBuff"
+                                                            disabled>
                                                         -
                                                     </button>
                                                     <button type="button"
-                                                            class="w-5 h-5 p-0 text-base leading-none rounded disabled:opacity-60 text-swgBlue border-swgBlue hover:bg-swgBlue hover:border-swgBlue hover:text-gray-700 text-center align-middle select-none bg-transparent border border-solid transition-colors">
+                                                            id="assignments_{{ buff.id }}_increase"
+                                                            class="w-5 h-5 p-0 text-base leading-none rounded disabled:opacity-60 text-swgBlue border-swgBlue hover:bg-swgBlue hover:border-swgBlue hover:text-gray-700 text-center align-middle select-none bg-transparent border border-solid transition-colors"
+                                                            data-app-buffid-param="{{ buff.id }}"
+                                                            data-app-action-param="increase"
+                                                            data-action="app#selectBuff">
                                                         +
                                                     </button>
                                                 </div>
@@ -70,7 +96,7 @@
                             <div class="w-3/4 font-bold">
                                 Points assigned
                             </div>
-                            <div class="w-1/4 font-bold text-right">4 / 20</div>
+                            <div class="w-1/4 font-bold text-right"><span data-app-target="pointsAssigned">0</span> / <span data-app-target="pointsMax">{{ pointsMax }}</span></div>
                         </div>
                     </div>
                     <div id="selectedBuffs"
@@ -78,13 +104,16 @@
                         <div class="w-full font-bold">
                             Selected buffs:
                         </div>
-                        <div><!-- Category container -->
-                            <div class="w-full mt-4 ml-4"><!-- Category -->
-                                +30 to agility attribute<!--Example attribute-->
-                            </div>
-                        </div>
+                        {% for buffGroupName, buffGroup in buffGroups %}
+                            {% for buff in buffGroup %}
+                                <div id="assigned_{{ buff.id }}_container"
+                                     class="w-full mt-4 ml-4 hidden">
+                                    {{ buff.prefix }}<span id="assigned_{{ buff.id }}_strength">X</span>{{ buff.suffix }}
+                                </div>
+                            {% endfor %}
+                        {% endfor %}
                         <div class="mt-4 flex justify-end">
-                            {{ include('partials/button.html.twig', {id: 'clearAllButton', label: 'Clear all'}) }}
+                            {{ include('partials/button.html.twig', {id: 'clearAllButton', label: 'Clear all', action: 'app#clearAll'}) }}
                         </div>
                     </div>
                 </div>
