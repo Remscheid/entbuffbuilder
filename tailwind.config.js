@@ -12,9 +12,13 @@ module.exports = {
         'swgLightBlue': '#00E3F3',
         'swgLighterBlue': '#9CF0FA',
         'swgOrange': '#FBA22E',
+        'swgDarkOrange': '#D87C04',
       },
       boxShadow: {
         'swg': '0 0 0 .2rem rgba(53,189,206,.25)',
+      },
+      transitionProperty: {
+        'topleft': 'top, left',
       }
     },
   },

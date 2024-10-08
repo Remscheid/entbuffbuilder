@@ -1,0 +1,36 @@
+<div id="tour-container"
+     class="absolute top-0 left-0 max-w-md transition-topleft hidden"
+     data-tour-target="container">
+    <div class="text-swgLighterBlue bg-swgDarkBlue border border-2 border-solid border-swgOrange rounded-[5px] p-2 my-[28px] max-w-md">
+        <div class="text-white bg-swgOrange font-bold text-sm -mx-2 -mt-2 mb-2 p-1">
+            Introduction tour
+        </div>
+
+        <div id="tour-item"
+             data-tour-target="content">
+        </div>
+
+        <div class="mt-2 flex justify-between">
+            <button type="button"
+                    id="tour-prev-button"
+                    class="mt-1 py-1 px-2 rounded text-white bg-swgOrange border-swgOrange border border-solid hover:bg-swgDarkOrange hover:border-swgDarkOrange text-center align-middle select-none transition-colors"
+                    data-tour-target="prevButton"
+                    data-action="tour#tourPrev">
+                Back
+            </button>
+            <button type="button"
+                    id="tour-close-button"
+                    class="mt-1 py-1 px-2 rounded text-white bg-swgOrange border-swgOrange border border-solid hover:bg-swgDarkOrange hover:border-swgDarkOrange text-center align-middle select-none transition-colors"
+                    data-action="tour#tourClose">
+                Close
+            </button>
+            <button type="button"
+                    id="tour-next-button"
+                    class="mt-1 py-1 px-2 rounded text-white bg-swgOrange border-swgOrange border border-solid hover:bg-swgDarkOrange hover:border-swgDarkOrange text-center align-middle select-none transition-colors"
+                    data-tour-target="nextButton"
+                    data-action="tour#tourNext">
+                Next
+            </button>
+        </div>
+    </div>
+</div>
