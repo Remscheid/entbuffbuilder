@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Criteria;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\Routing\Attribute\Route;
 
 class MainController extends AbstractController
@@ -17,12 +18,17 @@ class MainController extends AbstractController
     public function legends(
         LoggerInterface $logger,
         BuffsRepository $buffsRepository,
+        #[MapQueryParameter] ?string $q,
     ): Response {
         $logger->info('Calling route: legends');
 
+        $selected = is_string($q) ? explode('|', $q) : [];
+
         $allBuffs = $this->getBuffsByServer('legends', $buffsRepository);
+
+        $this->setAssignmentsIntoBuffs($selected, $allBuffs);
+
         $buffGroups = $this->getBuffsInGroups($allBuffs);
-        dump($buffGroups);
 
         return $this->render('main/legends.html.twig', [
             'pointsMax' => 20,
@@ -37,12 +43,17 @@ class MainController extends AbstractController
     public function restoration(
         LoggerInterface $logger,
         BuffsRepository $buffsRepository,
+        #[MapQueryParameter] ?string $q,
     ): Response {
         $logger->info('Calling route: restoration');
 
+        $selected = is_string($q) ? explode('|', $q) : [];
+
         $allBuffs = $this->getBuffsByServer('restoration', $buffsRepository);
+
+        $this->setAssignmentsIntoBuffs($selected, $allBuffs);
+
         $buffGroups = $this->getBuffsInGroups($allBuffs);
-        dump($buffGroups);
 
         return $this->render('main/restoration.html.twig', [
             'pointsMax' => 20,
@@ -56,12 +67,17 @@ class MainController extends AbstractController
     public function resurgence(
         LoggerInterface $logger,
         BuffsRepository $buffsRepository,
+        #[MapQueryParameter] ?string $q,
     ): Response {
         $logger->info('Calling route: resurgence');
 
+        $selected = is_string($q) ? explode('|', $q) : [];
+
         $allBuffs = $this->getBuffsByServer('resurgence', $buffsRepository);
+
+        $this->setAssignmentsIntoBuffs($selected, $allBuffs);
+
         $buffGroups = $this->getBuffsInGroups($allBuffs);
-        dump($buffGroups);
 
         return $this->render('main/resurgence.html.twig', [
             'pointsMax' => 40,
@@ -104,5 +120,22 @@ class MainController extends AbstractController
         }
 
         return $buffGroups;
+    }
+
+    /**
+     * @param array<string> $preselection
+     * @param array<Buffs> $buffs
+     * @return void
+     */
+    private function setAssignmentsIntoBuffs(array $preselection, array $buffs): void
+    {
+        if (count($preselection) !== count($buffs)) {
+            return;
+        }
+
+        for ($i = 0; $i < count($preselection); $i++) {
+            $assignments = intval($preselection[$i]);
+            $buffs[$i]->setAssignments($assignments);
+        }
     }
 }

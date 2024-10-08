@@ -1,4 +1,5 @@
 import { Controller } from '@hotwired/stimulus';
+import updateQueryString from "../util/updateQueryString.js";
 
 export default class extends Controller {
     static targets = [
@@ -12,12 +13,16 @@ export default class extends Controller {
 
     buffs = [];
     pointsMax = 0;
-    pointsAssigned = 0;
 
     connect() {
         this.buffs = JSON.parse(this.buffsJsonTarget.value);
-        console.log('buffsSource: ', this.buffs);
         this.pointsMax = parseInt(this.pointsMaxTarget.innerHTML, 10);
+
+        // Update UI
+
+        const pointsAssigned = this._countPointsAssigned(this.buffs);
+        this._updateUI(this.buffs, pointsAssigned, this.pointsMax);
+        this._updateChatMessage(this.buffs);
     }
 
     selectBuff({ params }) {
@@ -27,29 +32,30 @@ export default class extends Controller {
 
         // Check values
 
-        if (!this._checkPointsAssigned(action, selectedBuff.cost, this.pointsAssigned, this.pointsMax) ||
-            !this._checkBuffAssignment(action, selectedBuff.assignments, selectedBuff.maxAssignments)) {
+        const currentPointsAssigned = this._countPointsAssigned(this.buffs);
+        if (!this._validatePointsAssignment(action, selectedBuff.cost, currentPointsAssigned, this.pointsMax)
+            || !this._validateBuffAssignment(action, selectedBuff.assignments, selectedBuff.maxAssignments)) {
             return;
         }
 
         // Update values
 
-        selectedBuff.assignments = this._calculateBuffAssignment(action, selectedBuff.assignments);
-        this.pointsAssigned = this._calculatePointsAssigned(action, selectedBuff.cost, this.pointsAssigned);
+        selectedBuff.assignments = this._modifyBuffAssignment(action, selectedBuff.assignments);
 
         // Update UI
 
-        this._updateUI(this.buffs, this.pointsAssigned, this.pointsMax);
+        const pointsAssigned = this._countPointsAssigned(this.buffs);
+        this._updateUI(this.buffs, pointsAssigned, this.pointsMax);
         this._updateChatMessage(this.buffs);
     }
 
     clearAll() {
-        this.pointsAssigned = 0;
         this.buffs.forEach(buff => {
             buff.assignments = 0;
         });
 
-        this._updateUI(this.buffs, this.pointsAssigned, this.pointsMax);
+        const pointsAssigned = this._countPointsAssigned(this.buffs);
+        this._updateUI(this.buffs, pointsAssigned, this.pointsMax);
         this._updateChatMessage(this.buffs);
     }
 
@@ -66,6 +72,17 @@ export default class extends Controller {
         }
     }
 
+    saveToUrl() {
+        const buffs = [];
+
+        this.buffs.forEach((buff) => {
+            buffs.push(buff.assignments);
+        });
+
+        const url = updateQueryString(false, 'q', buffs.join('|'));
+        history.pushState({}, '', url);
+    }
+
     applyTemplate() {
         this._updateChatMessage(this.buffs);
     }
@@ -75,7 +92,7 @@ export default class extends Controller {
         this._updateChatMessage(this.buffs);
     }
 
-    _checkBuffAssignment(action, currentAssignments, maxAssignments) {
+    _validateBuffAssignment(action, currentAssignments, maxAssignments) {
         if (action === 'increase') {
             if (currentAssignments < maxAssignments) {
                 return true;
@@ -88,14 +105,14 @@ export default class extends Controller {
         return false;
     }
 
-    _calculateBuffAssignment(action, currentAssignments) {
+    _modifyBuffAssignment(action, currentAssignments) {
         if (action === 'increase') {
             return currentAssignments + 1;
         }
         return currentAssignments - 1;
     }
 
-    _checkPointsAssigned(action, cost, currentPointsAssigned, maxPointsAssigned) {
+    _validatePointsAssignment(action, cost, currentPointsAssigned, maxPointsAssigned) {
         if (action === 'increase') {
             if (currentPointsAssigned + cost <= maxPointsAssigned) {
                 return true;
@@ -108,11 +125,14 @@ export default class extends Controller {
         return false;
     }
 
-    _calculatePointsAssigned(action, cost, currentPointsAssigned) {
-        if (action === 'increase') {
-            return currentPointsAssigned + cost;
-        }
-        return currentPointsAssigned - cost;
+    _countPointsAssigned(buffs) {
+        let pointsAssigned = 0;
+
+        buffs.forEach(buff => {
+            pointsAssigned += buff.assignments * buff.cost;
+        });
+
+        return pointsAssigned;
     }
 
     _updateUI(buffs, currentPointsAssigned, maxPointsAssigned) {
@@ -125,7 +145,7 @@ export default class extends Controller {
             decreaseBuffButton.toggleAttribute('disabled', !buff.assignments);
 
             const increaseBuffButton = document.getElementById('assignments_' + buff.id + '_increase');
-            increaseBuffButton.toggleAttribute('disabled', buff.assignments >= buff.maxAssignments || currentPointsAssigned >= maxPointsAssigned);
+            increaseBuffButton.toggleAttribute('disabled', buff.assignments >= buff.maxAssignments || currentPointsAssigned + buff.cost > maxPointsAssigned);
 
             const buffStrength = buff.assignments * buff.effect;
             document.getElementById('assigned_' + buff.id + '_strength').innerHTML = `${buffStrength}`;

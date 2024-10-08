@@ -39,6 +39,12 @@ class Buffs
     #[ORM\Column(length: 255)]
     private ?string $suffix = null;
 
+    /*
+     * Non persistent properties
+     */
+
+    private int $assignments = 0;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -157,5 +163,15 @@ class Buffs
         $this->suffix = $suffix;
 
         return $this;
+    }
+
+    public function getAssignments(): int
+    {
+        return $this->assignments;
+    }
+
+    public function setAssignments(int $assignments): void
+    {
+        $this->assignments = $assignments;
     }
 }
