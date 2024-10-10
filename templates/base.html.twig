@@ -110,7 +110,7 @@
                         {% for buffGroupName, buffGroup in buffGroups %}
                             {% for buff in buffGroup %}
                                 <div id="assigned_{{ buff.id }}_container"
-                                     class="w-full mt-4 ml-4 hidden">
+                                     class="w-full text-swgDarkBlue overflow-hidden transition-assignments duration-500 ease-out mt-0 ml-4 h-0">
                                     {{ buff.prefix }}<span id="assigned_{{ buff.id }}_strength">X</span>{{ buff.suffix }}
                                 </div>
                             {% endfor %}
@@ -156,6 +156,8 @@
             </footer>
 
             {{ include('partials/tour.html.twig') }}
+
+            <div id="tailwind-dummy" class="transition-height hidden mt-4 h-6"></div>
         </div>
     </body>
 </html>

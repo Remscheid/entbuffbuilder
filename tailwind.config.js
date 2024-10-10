@@ -18,6 +18,7 @@ module.exports = {
         'swg': '0 0 0 .2rem rgba(53,189,206,.25)',
       },
       transitionProperty: {
+        'assignments': 'height, margin-top, opacity',
         'topleft': 'top, left',
       }
     },

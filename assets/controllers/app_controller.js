@@ -151,7 +151,24 @@ export default class extends Controller {
             document.getElementById('assigned_' + buff.id + '_strength').innerHTML = `${buffStrength}`;
 
             const selectedBuffContainer = document.getElementById('assigned_' + buff.id + '_container');
-            selectedBuffContainer.classList.toggle('hidden', !buff.assignments);
+            if (buff.assignments) {
+                selectedBuffContainer.classList.add('mt-4');
+                selectedBuffContainer.classList.remove('mt-0');
+                selectedBuffContainer.classList.add('h-6');
+                selectedBuffContainer.classList.remove('h-0');
+                selectedBuffContainer.classList.add('opacity-100');
+                selectedBuffContainer.classList.remove('opacity-0');
+                selectedBuffContainer.classList.remove('text-swgDarkBlue');
+
+            } else {
+                selectedBuffContainer.classList.add('h-0');
+                selectedBuffContainer.classList.remove('h-6');
+                selectedBuffContainer.classList.add('mt-0');
+                selectedBuffContainer.classList.remove('mt-4');
+                selectedBuffContainer.classList.add('opacity-0');
+                selectedBuffContainer.classList.remove('opacity-100');
+                selectedBuffContainer.classList.add('text-swgDarkBlue');
+            }
         });
     }
 
